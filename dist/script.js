@@ -1,0 +1,1 @@
+(()=>{console.log("objecft");let o=o=>{console.log(`Too : ${o}`)},l=[112,45,85,4567,852];o(l[3]),o(l[2])})();
