@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: './src/js/app.js',
   output: {
-    filename: 'script.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: './js/script.js',
+    path: path.resolve(__dirname, 'docs'),
   },
   plugins: [
     // new HtmlWebpackPlugin(),
@@ -18,7 +18,7 @@ module.exports = {
 //     runtimeChunk: 'single',
 //   },
   devServer: {
-    static: './dist',
+    static: './docs',
   },
   module: {
   rules: [
