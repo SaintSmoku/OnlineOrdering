@@ -13,6 +13,8 @@
 import SearchRecipes from "./models/search";
 import { elements, renderLoader, clearLoader } from "./views/base"
 import * as searchView from "./views/searchView";
+import Recipe from "./models/Recipe"
+import { renderRecipe, clearRecipe } from "./views/recipeView"
 
 // "btn search__btn"
 
@@ -69,6 +71,39 @@ elements.pageButtons.addEventListener("click", (event) => {
         searchView.renderRecipes(state.search.result, gotoPageNumber);
     }
 })
+
+// Joriin Controller
+
+const controlRecipe = async () => {
+    
+    const id = window.location.hash.replace("#", "");
+    console.log(id);
+
+    // 2.
+
+    state.recipe = new Recipe(id);
+
+    // 3. UI delgetsiig tseverlej beltgene.
+    clearRecipe();
+    renderLoader(elements.recipeDiv);
+
+    // 4. Joriig tataj avchirna.
+
+    await state.recipe.getRecipe();
+
+    // 5.Joriig delgetsend gargana.
+    clearLoader();
+    renderRecipe(state.recipe);
+    // console.log(state.recipe);
+    console.log(state.recipe.ingredients);
+
+}
+
+
+
+
+window.addEventListener("hashchange", controlRecipe)
+window.addEventListener("load", controlRecipe)
 
 
 
