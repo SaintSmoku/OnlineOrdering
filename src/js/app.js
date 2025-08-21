@@ -11,10 +11,13 @@
 // console.log(`Multiply of 2 numbers :  ${urjver(4, 6)}`);
 
 import SearchRecipes from "./models/search";
-import { elements, renderLoader, clearLoader } from "./views/base"
+import { elements, renderLoader, clearLoader } from "./views/base";
 import * as searchView from "./views/searchView";
-import Recipe from "./models/Recipe"
-import { renderRecipe, clearRecipe } from "./views/recipeView"
+import Recipe from "./models/Recipe";
+import { renderRecipe, clearRecipe } from "./views/recipeView";
+import { highLightSelectedRecipe, removeHighLightSelectedRecipe } from "./views/recipeView";
+import List from "./models/List";
+import * as listView from "./views/listView"
 
 // "btn search__btn"
 
@@ -86,6 +89,7 @@ const controlRecipe = async () => {
     // 3. UI delgetsiig tseverlej beltgene.
     clearRecipe();
     renderLoader(elements.recipeDiv);
+    highLightSelectedRecipe(id);
 
     // 4. Joriig tataj avchirna.
 
@@ -99,11 +103,8 @@ const controlRecipe = async () => {
 
 }
 
-
-
-
-window.addEventListener("hashchange", controlRecipe)
-window.addEventListener("load", controlRecipe)
+window.addEventListener("hashchange", controlRecipe);
+if ( state.recipe ) window.addEventListener("load", controlRecipe);
 
 
 
@@ -114,3 +115,26 @@ window.addEventListener("load", controlRecipe)
 // })
 
 // console.log(recipes); 
+
+// Nairlaganii Controller
+
+const controlList = () => {
+    // Nairlaganii model uusgene.
+    state.list = new List;
+
+    listView.clearItems();
+
+    // Ug model ruu joriig hiine.
+    state.recipe.ingredients.forEach(el => {
+        state.list.addItem(el);
+        // console.log(el);
+        listView.renderItem(el);
+
+    });
+}
+
+elements.recipeDiv.addEventListener("click", el => {
+    if (el.target.matches(".recipe__btn, .recipe__btn *")){
+        controlList();
+    }
+});

@@ -13,6 +13,16 @@ const renderIngredient = (ingredient) => {
             </li>`
 }
 
+export const highLightSelectedRecipe = (id) => {
+
+    const arr =  Array.from(document.querySelectorAll(".results__link"));
+
+   arr.forEach( (el) => {
+    el.classList.remove("results__link--active")
+   })
+
+    document.querySelector(`a[href*="${id}"]`).classList.add("results__link--active");
+}
 export const clearRecipe = () => {
     elements.recipeDiv.innerHTML = "";
 }
