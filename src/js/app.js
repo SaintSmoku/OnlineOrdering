@@ -121,14 +121,16 @@ if ( state.recipe ) window.addEventListener("load", controlRecipe);
 const controlList = () => {
     // Nairlaganii model uusgene.
     state.list = new List;
+    // for Test
+    // window.tt = state.list;
 
     listView.clearItems();
 
     // Ug model ruu joriig hiine.
     state.recipe.ingredients.forEach(el => {
-        state.list.addItem(el);
+        const item = state.list.addItem(el);
         // console.log(el);
-        listView.renderItem(el);
+        listView.renderItem(item);
 
     });
 }
@@ -138,3 +140,14 @@ elements.recipeDiv.addEventListener("click", el => {
         controlList();
     }
 });
+
+// Sagsnaas ustgah
+elements.shoppingDiv.addEventListener("click", el => {
+    const id = el.target.closest(".shopping__item").dataset.itemid;
+
+    // Oldson id-tai elementiig Model-s ustgana. !!! MODEL !!! not Display
+    state.list.deleteItem(id);
+
+    // Oldson id-tai elementiig Display-s ustgana. !!! DISPLAY !!! not MODEL
+    listView.deleteItem(id);
+})
