@@ -17,7 +17,8 @@ import Recipe from "./models/Recipe";
 import { renderRecipe, clearRecipe } from "./views/recipeView";
 import { highLightSelectedRecipe, removeHighLightSelectedRecipe } from "./views/recipeView";
 import List from "./models/List";
-import * as listView from "./views/listView"
+import * as listView from "./views/listView";
+import Likes from "./models/Like";
 
 // "btn search__btn"
 
@@ -135,9 +136,21 @@ const controlList = () => {
     });
 }
 
+// Like Controller
+const controlLike = () => {
+    console.log("Love clicked");
+    // 1. Like-iin modeliig uusgene.
+
+    // 2. Odoo haragdaj bga joriin ID-g olj avah
+
+    // 3. 
+}
+
 elements.recipeDiv.addEventListener("click", el => {
     if (el.target.matches(".recipe__btn, .recipe__btn *")){
         controlList();
+    } else if ( el.target.matches(".recipe__love, .recipe__love *")) {
+        controlLike();
     }
 });
 
