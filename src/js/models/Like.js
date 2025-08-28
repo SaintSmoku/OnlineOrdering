@@ -1,12 +1,18 @@
 export default class Likes {
     constructor() {
-        this.likes = [];
+        this.readDataFromLocalStorage();
+        if (!this.likes) { this.likes = []; }
+        
     }
 
     addLike(id, title, author, img){
         const like = {id, title, author, img};
 
         this.likes.push(like);
+
+        // Storage ruu hadgallaa
+        this.saveDataToLocalStorage();
+
         return like;
     }
 
@@ -23,5 +29,13 @@ export default class Likes {
 
     getNumberOfLikes (){
         return this.likes.length;
+    }
+
+    saveDataToLocalStorage(){
+        localStorage.setItem("likes", JSON.stringify(this.likes));
+    }
+
+    readDataFromLocalStorage(){
+        this.likes = JSON.parse(localStorage.getItem("likes"));
     }
 }

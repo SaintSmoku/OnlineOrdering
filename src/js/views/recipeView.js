@@ -26,7 +26,7 @@ export const highLightSelectedRecipe = (id) => {
 export const clearRecipe = () => {
     elements.recipeDiv.innerHTML = "";
 }
-export const renderRecipe = (recipe) => {
+export const renderRecipe = (recipe, isLike) => {
     const html = `<figure class="recipe__fig">
                 <img src="${recipe.image_url}" alt="${recipe.title}" class="recipe__img">
                 <h1 class="recipe__title">
@@ -64,7 +64,7 @@ export const renderRecipe = (recipe) => {
                 </div>
                 <button class="recipe__love">
                     <svg class="header__likes">
-                        <use href="img/icons.svg#icon-heart-outlined"></use>
+                        <use href="img/icons.svg#icon-heart${isLike ? "" : "-outlined"}"></use>
                     </svg>
                 </button>
             </div>

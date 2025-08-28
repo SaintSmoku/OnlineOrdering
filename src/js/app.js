@@ -18,7 +18,8 @@ import { renderRecipe, clearRecipe } from "./views/recipeView";
 import { highLightSelectedRecipe, removeHighLightSelectedRecipe } from "./views/recipeView";
 import List from "./models/List";
 import * as listView from "./views/listView";
-import Likes from "./models/Like";
+import Like from "./models/Like";
+import * as likesView from "./views/likesView";
 
 // "btn search__btn"
 
@@ -81,6 +82,7 @@ elements.pageButtons.addEventListener("click", (event) => {
 const controlRecipe = async () => {
     
     const id = window.location.hash.replace("#", "");
+    
     console.log(id);
 
     // 2.
@@ -90,7 +92,7 @@ const controlRecipe = async () => {
     // 3. UI delgetsiig tseverlej beltgene.
     clearRecipe();
     renderLoader(elements.recipeDiv);
-    highLightSelectedRecipe(id);
+    if (id ) highLightSelectedRecipe(id);
 
     // 4. Joriig tataj avchirna.
 
@@ -98,7 +100,7 @@ const controlRecipe = async () => {
 
     // 5.Joriig delgetsend gargana.
     clearLoader();
-    renderRecipe(state.recipe);
+    renderRecipe(state.recipe, state.likes.isLike(id));
     // console.log(state.recipe);
     console.log(state.recipe.ingredients);
 
@@ -107,15 +109,23 @@ const controlRecipe = async () => {
 window.addEventListener("hashchange", controlRecipe);
 if ( state.recipe ) window.addEventListener("load", controlRecipe);
 
+window.addEventListener("load", (el) => {
+    
+    //Browser-iin "localStorage"-s like-iin medeelliig unshih uchir dunguj achaalagdaj ehlenguut  Like modeliig uusgeh yostoi
+    if (!state.likes) { state.likes = new Like() }
+
+    // Like tsesiig gargah esehiig shiideh
+    likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+
+    // Like-uud baival delgetsend gargah
+
+    state.likes.likes.forEach( (like) => {
+        likesView.renderLike(like);
+    })
+
+});
 
 
-// let search = new SearchRecipes("pasta");
-
-// search.doSearch().then(result => {
-//     console.log(result);
-// })
-
-// console.log(recipes); 
 
 // Nairlaganii Controller
 
@@ -141,9 +151,35 @@ const controlLike = () => {
     console.log("Love clicked");
     // 1. Like-iin modeliig uusgene.
 
-    // 2. Odoo haragdaj bga joriin ID-g olj avah
+    if (!state.likes) { state.likes = new Like()}
+    // let newLike;
 
-    // 3. 
+    // 2. Odoo haragdaj bga joriin ID-g olj avah
+    const currentRecipeID = state.recipe.id;
+
+    // 3. Ene joriig laiklasan esehiig shalgah
+    if(state.likes.isLike(currentRecipeID)) {
+    // 4. Laiklasan bol laikiig n boliulna
+
+    console.log("Laik hiisen bna. ");
+    console.log(state.likes);
+    state.likes.deleteLike(currentRecipeID);
+
+    // Laikiin tsesnees ustgana.
+    likesView.deleteLike(currentRecipeID);
+
+    likesView.toggleLike(false);
+    } else {
+    // 5. Laiklaagui bol laiklana.
+
+    console.log("Laik hiigeegui bna. ");
+    const newLike = state.likes.addLike(currentRecipeID, state.recipe.title, state.recipe.publisher, state.recipe.image_url);
+    likesView.toggleLike(true);
+   
+
+    likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+    likesView.renderLike(newLike);
+   }
 }
 
 elements.recipeDiv.addEventListener("click", el => {
